@@ -11,7 +11,8 @@ def dict_home():
 
 @app.route("/api/v1/<word>")
 def result(word):
-    definition = word.upper()
+    df = pd.read_csv("dictionary.csv")
+    definition = df.loc[df["word"] == word]["definition"].squeeze()
     res_dict = {"word": word, "definition": definition}
     return res_dict
 
