@@ -11,8 +11,16 @@ def home():
 
 @app.route("/api/v1/<station>/<date>")
 def about(station, date):
-    return render_template("about.html")
+    filename = "data_small/TG_STAID" + str(station).zfill(6) + ".txt"
+    df = pd.read_csv(filename, skiprows=20, parse_dates=["    DATE"])
+    date_form = str(date[:4]) + "-" + str(date[4:6]) + "-" + str(date[6:])
+    temperature = df.loc[df["    DATE"] == date_form]["   TG"].squeeze() /10
+    return {"station": station,
+            "date": date,
+            "temperature": temperature}
 
-app.run(debug=True)
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 
