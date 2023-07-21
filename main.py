@@ -5,9 +5,14 @@ import pandas as pd
 app = Flask(__name__)
 
 # the @ is a decorator, it connects the route method with the function (home in this case)
+
+stations = pd.read_csv("data_small/stations.txt", skiprows=17)
+#print(stations)
+stations = stations[["STAID", "STANAME                                 "]]
+
 @app.route("/")
 def home():
-    return render_template("home.html")
+    return render_template("home.html", data=stations.to_html())
 
 @app.route("/api/v1/<station>/<date>")
 def station(station, date):
